@@ -8,7 +8,7 @@ const path = require('path');
     for (const file of files) {
         if (file.isFile()) {
             const s = await fs.stat(path.join(__dirname, 'secret-folder', file.name))
-            console.log(`${file.name.split('.')[0]} - ${file.name.split('.')[1]} - ${s.size}kb`)
+            console.log(`${file.name.split('.')[0]} - ${file.name.split('.')[1]} - ${s.size}b`)
         }
     }
 })()
