@@ -47,43 +47,33 @@ fs.rm(path.join(__dirname, 'project-dist'), { recursive: true, force: true }, ()
 
     //--------------------------create style.css-----------------------------
 
-    fs.writeFile(
-      path.join(__dirname, 'project-dist', 'style.css'),
-      '',
-      (err) => {
-        if (err) throw err;
-
-        fs.readdir(path.join(__dirname, 'styles'), { withFileTypes: true }, (err, files) => {
+    fs.readdir(path.join(__dirname, 'styles'), { withFileTypes: true }, (err, files) => {
+      if (err) throw err;
+    
+      fs.writeFile(
+        path.join(__dirname, 'project-dist', 'style.css'),
+        '',
+        (err) => {
           if (err) throw err;
-          let arr = [];
-          files.forEach(file => {
-            if (file.isFile() && file.name.split('.')[1] === 'css') {
-              fs.readFile(path.join(__dirname, 'styles', file.name), (err, file) => {
+        }
+      );
+    
+      files.forEach(file => {
+        if (file.isFile() && file.name.split('.')[1] === 'css') {
+          fs.readFile(path.join(__dirname, 'styles', file.name), (err, file) => {
+            if (err) throw err;
+    
+            fs.appendFile(
+              path.join(__dirname, 'project-dist', 'style.css'),
+              file,
+              err => {
                 if (err) throw err;
-                arr.push(file.toString());
-              });
-            }
+              }
+            );
           });
-
-          fs.writeFile(
-            path.join(__dirname, 'project-dist', 'style.css'),
-            '',
-            (err) => {
-              if (err) throw err;
-              arr.forEach(el => {
-                fs.appendFile(
-                  path.join(__dirname, 'project-dist', 'style.css'),
-                  el,
-                  err => {
-                    if (err) throw err;
-                  }
-                );
-              });
-            }
-          );
-        });
-      }
-    );
+        }
+      });
+    });
 
     //-----------------------------create folder assets------------------------------
 
